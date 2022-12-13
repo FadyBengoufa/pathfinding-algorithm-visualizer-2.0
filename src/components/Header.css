@@ -1,0 +1,120 @@
+:root {
+  --primary-color: #1abc9c;
+  --secondary-color: #34495e;
+}
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.container {
+  width: 1170px;
+  position: relative;
+  margin: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar {
+  width: 100%;
+  display: flex;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 5%);
+  background-color: var(--secondary-color);
+  padding: 1rem 1.15rem;
+  border-bottom: 1px solid #eceef3;
+}
+
+.navbar-header h4 {
+  color: white;
+  padding-right: 1.5rem;
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-nav {
+  display: flex;
+  list-style: none;
+}
+
+.navbar-nav li a {
+  color: white;
+  padding: 0.8rem 1rem;
+  font-size: 14px;
+  line-height: 23px;
+  font-weight: 700;
+}
+
+.navbar-nav li a:hover {
+  color: var(--primary-color);
+}
+
+.navbar-dropdown {
+  position: relative;
+}
+
+.navbar-dropdown svg {
+  vertical-align: inherit;
+  padding-left: 5px;
+}
+
+.navbar-dropdown .dropdown {
+  list-style: none;
+  position: absolute;
+  top: 190%;
+  left: 0;
+  background-color: var(--secondary-color);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  min-width: 160px;
+  width: auto;
+  white-space: nowrap;
+  box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 10%);
+  z-index: 99;
+  border-radius: 4px;
+  font-weight: normal;
+  /* display: none; */
+}
+
+.navbar-dropdown .dropdown li {
+  padding: 14px 10px;
+}
+
+.navbar-dropdown .dropdown li a {
+  font-weight: normal;
+}
+
+.navbar-dropdown .dropdown li a:hover {
+  color: #fff;
+  background-color: var(--primary-color);
+  font-weight: normal;
+  border-radius: 4px;
+}
+
+.visualizer-btn {
+  border: none;
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 1.4;
+  border-radius: 4px;
+  padding: 10px 15px;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  background-color: #1abc9c;
+}
+
+.visualizer-btn:hover {
+  color: #ffffff !important;
+  background-color: #48c9b0;
+  border-color: #48c9b0;
+}

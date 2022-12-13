@@ -1,0 +1,59 @@
+.App {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.App h3{
+  padding: 1rem;
+}
+
+.grid{
+  margin-top: 2rem;
+}
+
+.visualizer-btn {
+  border: none;
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 1.4;
+  border-radius: 4px;
+  padding: 10px 15px;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  background-color: #1abc9c;
+  margin-left: 1rem;
+  cursor: pointer;
+}
+
+.btn {
+  border: none;
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 1.4;
+  border-radius: 4px;
+  padding: 10px 15px;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  background-color: #34495e;
+  margin-left: 1rem;
+  cursor: pointer;
+}
+
+.visualizer-btn:hover {
+  color: #ffffff;
+  background-color: #48c9b0;
+  border-color: #48c9b0;
+}
+
+.row-grid {
+  display: flex;
+  justify-content: center;
+}
+
+#no-path{
+  display: none;
+  font-size: 1.5rem;
+  color: #1abc9c;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
