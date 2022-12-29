@@ -313,6 +313,11 @@ export default class PathfindingVisualizer extends Component {
         >
           Recursive Division Maze
         </button>
+        <button
+          className="btn"
+        >
+          Random Maze
+        </button>
         <div className="grid">
           <span id="no-path">THE ALGORITHM DIDN'T FIND ANY PATH</span>
           {/* Mapping each Row */}

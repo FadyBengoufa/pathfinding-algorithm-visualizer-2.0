@@ -8,6 +8,11 @@ Dijkstra's algorithm is an algorithm for finding the shortest paths between node
 
 This project is still in progress.. I will be adding more features to it.
 
+
+## HOW TO DEPLOY MY CODE
+
+- 
+
 ## Available Scripts
 
 In the project directory, you can run:
