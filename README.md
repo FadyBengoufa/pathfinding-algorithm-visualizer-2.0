@@ -11,7 +11,8 @@ This project is still in progress.. I will be adding more features to it.
 
 ## HOW TO DEPLOY MY CODE
 
-- 
+`npm run deploy` from terminal after merge request with branch main otherwise it will show the past changes 
+that exist in `gh-pages` branch.
 
 ## Available Scripts
 
