@@ -15,6 +15,9 @@ export default class Node extends Component {
       onMouseUp,
       onMouseEnter,
       distance,
+      f_cost,
+      g_cost,
+      h_cost,
     } = this.props;
 
     const extraClassName = isFinish
@@ -38,9 +41,26 @@ export default class Node extends Component {
         onMouseEnter={() => onMouseEnter(row, col)}
         onMouseUp={() => onMouseUp()}
       >
-        <span className="distance">
+        {/* <span className="distance">
           {Infinity ? <FontAwesomeIcon icon={faInfinity} /> : distance}
-        </span>
+        </span> */}
+        {/* <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+            height: "100%",
+            justifyContent: "center",
+            fontSize: "0.85rem",
+          }}
+        >
+          <span>F = {f_cost}</span>
+          <span>G = {g_cost}</span>
+          <span>H = {h_cost}</span>
+          <span>
+            {col},{row}
+          </span>
+        </div> */}
       </div>
     );
   }

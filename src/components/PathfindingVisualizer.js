@@ -4,13 +4,14 @@ import { recursiveDivision } from "../mazes/recursive-division";
 import Header from "./Header";
 import Node from "./Node";
 import "./PathfindingVisualizer.css";
+import { a_star, manhattan_distance } from "../algorithms/a-star-search";
 
 const START_NODE_ROW = 2;
 const START_NODE_COL = 3;
-const FINISH_NODE_ROW = 10;
-const FINISH_NODE_COL = 20;
-const GRID_ROWS = 20;
-const GRID_COLS = 50;
+const FINISH_NODE_ROW = 6;
+const FINISH_NODE_COL = 24;
+let GRID_ROWS = 20;
+let GRID_COLS = 30;
 
 const SPEED = 10;
 const SPEED_SHORT_PATH = 50;
@@ -28,6 +29,7 @@ export default class PathfindingVisualizer extends Component {
         { value: "A* Search", label: "A* Search" },
       ],
       selectedAlgorithm: "",
+      visualize: true,
     };
   }
 
@@ -247,7 +249,7 @@ export default class PathfindingVisualizer extends Component {
 
         document.getElementById(`node-${wall[0]}-${wall[1]}`).className =
           "node node-maze";
-      }, 10 * i);
+      }, SPEED * i);
     }
 
     /**
@@ -268,23 +270,91 @@ export default class PathfindingVisualizer extends Component {
   // }
 
   handleOnChangelAlgorithm = (e) => {
-    console.log(this.state.algorithmsList);
-    this.setState({ selectedAlgorithm: e.target.value });
+    this.clearBoard();
+    if (e.target.value != "") {
+      this.setState({ selectedAlgorithm: e.target.value, visualize: false });
+    }
   };
 
+  visualizeAStar() {
+    const { grid } = this.state;
+    const startNode = getStartNode(grid);
+    const finishNode = getFinishNode(grid);
+    console.log("Animating A * Search...");
+    const shortestPathNodes = a_star(grid, startNode, finishNode);
+
+    // console.log("shortestPathNodes", shortestPathNodes);
+
+    let j = 0;
+    for (let i = shortestPathNodes.length - 1; i >= 0; i--) {
+      setTimeout(() => {
+        const node = shortestPathNodes[i];
+        /**
+         * Keep the start node style, it's the first element in the visitedNodesInOrder
+         * array because it has the lowest distance.
+         */
+        if (
+          node != shortestPathNodes[shortestPathNodes.length - 1] &&
+          node != shortestPathNodes[0]
+        )
+          document.getElementById(`node-${node.row}-${node.col}`).className =
+            "node node-shortest-path";
+        // console.log(node);
+      }, SPEED_SHORT_PATH * j);
+      j = j + 1;
+    }
+
+    if (shortestPathNodes.length == 0)
+      document.getElementById("no-path").style.display = "block";
+  }
+
+  visualizeAlgorithm(selectedAlgorithm) {
+    switch (selectedAlgorithm) {
+      case this.state.algorithmsList[1].value:
+        return this.visualizeDijkstra();
+
+      case this.state.algorithmsList[2].value:
+        return this.visualizeAStar();
+      default:
+        break;
+    }
+  }
+
+  handleOnChangeGridRows(e) {
+    GRID_ROWS = e.target.value;
+    const grid = getInitialGrid();
+    this.setState({ grid });
+  }
+
+  handleOnChangeGridCols(e) {
+    GRID_COLS = e.target.value;
+    const grid = getInitialGrid();
+    this.setState({ grid });
+  }
+
   render() {
-    const { grid, mouseIsPressed, selectedAlgorithm, algorithmsList } =
-      this.state;
+    const {
+      grid,
+      mouseIsPressed,
+      selectedAlgorithm,
+      algorithmsList,
+      visualize,
+    } = this.state;
     return (
       <>
         {/* <Header selectedAlgorithm={selectedAlgorithm} /> */}
         <h3>Pathfinding Algorithm</h3>
         <button
-          className="visualizer-btn"
-          onClick={() => this.visualizeDijkstra()}
+          className={`visualizer-btn ${
+            !visualize ? "visualize_active" : "visualize_disabled"
+          }`}
+          disabled={visualize}
+          onClick={() => this.visualizeAlgorithm(selectedAlgorithm)}
         >
           Visualize {selectedAlgorithm}
         </button>
+        {/* {this.showAlgorithmButton()} */}
+
         <select
           className="btn"
           onChange={this.handleOnChangelAlgorithm}
@@ -313,11 +383,27 @@ export default class PathfindingVisualizer extends Component {
         >
           Recursive Division Maze
         </button>
-        <button
-          className="btn"
-        >
-          Random Maze
-        </button>
+        {/* <button className="btn">Random Maze</button> */}
+        <div className="input_wrapper">
+          <div className="input_box">
+            <label>GRID ROWS</label>
+            <input
+              type="number"
+              value={GRID_ROWS}
+              onChange={(e) => this.handleOnChangeGridRows(e)}
+              // maxlength={FINISH_NODE_ROW || FINISH_NODE_ROW}
+            />
+          </div>
+          <div className="input_box">
+            <label>GRID COLS</label>
+            <input
+              type="number"
+              value={GRID_COLS}
+              onChange={(e) => this.handleOnChangeGridCols(e)}
+              // maxlength={FINISH_NODE_COL || START_NODE_COL}
+            />
+          </div>
+        </div>
         <div className="grid">
           <span id="no-path">THE ALGORITHM DIDN'T FIND ANY PATH</span>
           {/* Mapping each Row */}
@@ -334,6 +420,9 @@ export default class PathfindingVisualizer extends Component {
                     isWall,
                     isVisited,
                     distance,
+                    f_cost,
+                    g_cost,
+                    h_cost,
                   } = node;
                   return (
                     <Node
@@ -346,6 +435,9 @@ export default class PathfindingVisualizer extends Component {
                       mouseIsPressed={mouseIsPressed}
                       isVisited={isVisited}
                       distance={distance}
+                      f_cost={f_cost}
+                      g_cost={g_cost}
+                      h_cost={h_cost}
                       onMouseDown={(e, row, col) =>
                         this.handleMouseDown(e, row, col)
                       }
@@ -387,6 +479,9 @@ const createNode = (col, row) => {
     isVisited: false,
     distance: Infinity,
     previousNode: null,
+    f_cost: Infinity,
+    g_cost: Infinity,
+    h_cost: manhattan_distance(col, row, FINISH_NODE_COL, FINISH_NODE_ROW),
   };
 };
 

@@ -11,6 +11,36 @@
   margin-top: 2rem;
 }
 
+input {
+  display: block;
+  margin: 2em auto;
+  border: none;
+  padding: 0;
+  width: 10.5ch;
+  background: repeating-linear-gradient(90deg, dimgrey 0, dimgrey 1ch, transparent 0, transparent 1.5ch) 0 100%/10ch 2px no-repeat;
+  font: 3ch droid sans mono, consolas, monospace;
+  letter-spacing: 0.5ch;
+}
+input:focus {
+  outline: none;
+  color: dodgerblue;
+}
+.input_wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.input_box{
+  display: flex;
+  align-items: center;
+  height: 8vh
+}
+
+.input_box label{
+  font: 2.5ch droid sans mono, consolas, monospace;
+  margin: 0 5rem;
+}
+
 .visualizer-btn {
   border: none;
   font-size: 15px;
@@ -23,6 +53,19 @@
   background-color: #1abc9c;
   margin-left: 1rem;
   cursor: pointer;
+}
+
+.visualizer-btn.visualize_disabled{
+  cursor: not-allowed;
+  pointer-events: all !important;
+}
+
+.visualizer-btn.visualize_active{
+  background-color: #ff253a;
+}
+
+.visualizer-btn.visualize_active:hover{
+  background-color: #ea182c;
 }
 
 .btn {
